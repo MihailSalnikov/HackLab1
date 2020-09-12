@@ -9,56 +9,72 @@ intro:
     help: "Some help"
 nodes:
     - # 0
-        type: 'action'
-        message: 'Ну что, пойдем на работу?'
-        actions:
-            - message: 'Да'
-              state_change: 
-                money: 100
-                time: 1
-              child: 1
-            - message: 'Нет'
-              state_change:
-                money: -50
-                time: 0
-              child: 0
-            - message: 'Пошел ты!'
-              state_change:
-                money: 0
-                time: 0
-              child: 2
+      type: 'action'
+      message: 'Выбор персонажа'
+      actions:
+        - message: 'Студент'
+          state_change:
+            money: 0
+            time: 0
+          child: 1
+        - message: 'Бизнесмен'
+          state_change:
+            money: 0
+            time: 0
+          child: 1
+        - message: 'Барменша'
+          state_change:
+            money: 0
+            time: 0
+          child: 1
     - # 1
-        type: 'random'
-        message: null
-        actions:
-            - message: 'Ты получил наследство от далекого дяди, которого ты никогда не знал. Ужасная утрата, надеюсь эти 1000 ТФ рублей смогут помочь.'
-              state_change:
-                money: 1000
-                time: 1
-              child: 0
-              prob: 0.01
-            - message: 'Ты упал с лестницы, теперь нужны деньги на лекарства. 500 ТФ рублей не мало, но на здоровье экономить нельзя'
-              state_change:
-                money: -500
-                time: 1
-              child: 0
-              prob: 0.19
-            - message: 'День был тяжелый, ты решил выпитьь пивка. (-100 ТФ Рублей)'
-              state_change:
-                money: -80
-                time: 1
-              child: 0
-              prob: 0.8
+      type: 'action'
+      message: 'Первое - работаешь или нет? Условия - если работаешь - тратишь 20 points energy и приносит 30к тенге. https://www.streetfoodguy.com/wp-content/uploads/2020/04/mcdonalds.jpeg'
+      actions:
+        - message: 'Да'
+          state_change:
+            time: 1
+            money: 30000
+          child: 2
+        - message: 'Нет'
+          state_change:
+            time: 1
+            money: 0
+          child: 2
     - # 2
-        type: 'random'
-        message: null
-        actions:
-            - message: "Сам пошел!\nВас гопонули на 100 ТФ рублей."
-              state_change:
-                money: -100
-                time: 1
-              child: 1
-              prob: 1.0
-
-              
-            
+      type: 'action'
+      message: 'Ты пришел на лекцию, но очень устал, потому что работал вчера допоздна. Что выбрать - поспать на лекции (+10 energy)  или слушать лекции?'
+      actions:
+        - message: 'Поспать'
+          state_change:
+            time: 1
+            money: 0
+          child: 3
+        - message: 'Слушать лекцию'
+          state_change:
+            time: 1
+            money: 0
+          child: 3
+    - # 3
+      type: 'action'
+      message: 'Тебе снится, что Илон Маск заходит в твиттер и пишет, что акции Теслы слишком дороги. Шорт или лонг? https://journal.tinkoff.ru/short-selling/'
+      actions:
+        - message: 'Шорт'
+          state_change:
+            time: 0
+            money: 0
+          child: 4
+        - message: 'Лонг'
+          state_change:
+            time: 0
+            money: 0
+          child: 4
+    - # 4
+      type: 'action'
+      message: 'Это конец игры (ПОКА)'
+      actions:
+        - message: 'Ура'
+          state_change:
+            time: 0
+            money: 0
+          child: 4
