@@ -33,13 +33,50 @@ def node_parser(raw_node):
     else:
          return RandomNode(raw_node['message'], actions)
 
+
+def get_new_action_id():
+    chosed_id = input('choose id: ')
+    try:
+        chosed_id = int(chosed_id)
+        return chosed_id
+    except Exception as e:
+        return  get_new_action_id()
+
+
 if __name__ == '__main__':
     with open('action_tree.yaml', 'r') as f:
-        raw_nodes = yaml.load(f.read())['nodes']
+        config = yaml.load(f.read(), Loader=yaml.FullLoader)
 
+    print(config['intro']['message'])
+
+    raw_nodes = config['nodes']
     nodes = [node_parser(n) for n in raw_nodes]
 
     world = World(nodes)
+
     while True:
-        world.time_step()
-        print('')
+        print('-'*50)
+        print(world.state)
+
+        if world.node.message and world.node.message != '':
+            print(world.node.message)
+        
+        if world.node.type == 'random':
+            new_state, action_message = world.do_action()
+            if action_message and action_message != '':
+                print(action_message)
+        
+        elif world.node.type == 'action':
+            for idx, msg in world.node.action_messages:
+                print(f'{idx:5}: {msg}')
+
+            chosed_id = get_new_action_id()
+            new_state, action_message = world.do_action(chosed_id)
+        else:
+            raise Exception(f'unexpected error. Not supported node type {world.node.type}')
+
+            
+        if world.state.money < 0:
+            print("\n\nДенег больше нет!\nТы проиграл!")
+            break
+
