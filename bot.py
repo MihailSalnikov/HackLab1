@@ -1,9 +1,12 @@
 #/usr/bin/env python3
 
-import config
+import json
 import telebot
 
-bot = telebot.TeleBot(config.token)
+
+config = json.load(open("config.json"))
+
+bot = telebot.TeleBot(config['token'])
 
 @bot.message_handler(content_types=["text"])
 def repeat_all_messages(message): # Название функции не играет никакой роли
