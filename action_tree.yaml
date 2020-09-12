@@ -1,3 +1,11 @@
+intro:
+    message: "
+Добро пожаловать в симулятор студента.\n\n
+У тебя не так много денег (1000 ТФ Рублей).\n
+Главное, не остаться без денег иначе конец, кушать то надо!\n
+В остальном, работай, инвестируй, буть крутым.\n
+\n
+Удачи!\n\n"
 nodes:
     - # 0
         type: 'action'
@@ -10,9 +18,14 @@ nodes:
               child: 1
             - message: 'Нет'
               state_change:
-                money: 50
+                money: -50
                 time: 0
               child: 0
+            - message: 'Пошел ты!'
+              state_change:
+                money: 0
+                time: 0
+              child: 2
     - # 1
         type: 'random'
         message: null
@@ -22,13 +35,29 @@ nodes:
                 money: 1000
                 time: 1
               child: 0
-              prob: 0.5
+              prob: 0.01
             - message: 'Ты упал с лестницы, теперь нужны деньги на лекарства. 500 ТФ рублей не мало, но на здоровье экономить нельзя'
               state_change:
                 money: -500
                 time: 1
               child: 0
-              prob: 0.5
+              prob: 0.19
+            - message: 'День был тяжелый, ты решил выпитьь пивка. (-100 ТФ Рублей)'
+              state_change:
+                money: -80
+                time: 1
+              child: 0
+              prob: 0.8
+    - # 2
+        type: 'random'
+        message: null
+        actions:
+            - message: "Сам пошел!\nВас гопонули на 100 ТФ рублей."
+              state_change:
+                money: -100
+                time: 1
+              child: 1
+              prob: 1.0
 
               
             

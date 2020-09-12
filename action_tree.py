@@ -5,6 +5,12 @@ class State():
         self.money = money
         self.time = start_time
 
+    def __repr__(self):
+        return f'''
+Состояние:
+money: {self.money}
+time: {self.time}
+'''
     
 class Action():
     def __init__(self, message, state_change, child, prob=None):
@@ -47,31 +53,51 @@ class ActionNode(Node):
         for i, action in enumerate(self.actions):
             yield (i, action.message)
 
-    def do_action(self, state):
-        for i, msg in self.action_messages:
-            print(f'{i}: ', end='')
-            if msg:
-                print(msg)
-        act_id = int(input('Выбери ответ '))
-        action = self.actions[act_id]
-        new_state = action.apply_state_change(state)
-        return new_state, action.child, None
+    def do_action(self, state, action_id):
+        new_action = self.actions[action_id]
+        new_state = new_action.apply_state_change(state)
+        return new_state, new_action.child, new_action.message
+
 
 class World():
     def __init__(self, nodes):
         self.nodes = nodes
         self.current_node = self.nodes[0]
         self.current_state = State(1000, 0)
-
-    def time_step(self):
-        if self.current_node.message:
-            print(self.current_node.message)
-
-        self.current_state, new_node_id, action_message = self.current_node.do_action(self.current_state)
-        if action_message:
-            print(action_message)
+    
+    @property
+    def state(self):
+        return self.current_state
+    
+    @property
+    def node(self):
+        return self.current_node
+    
+    def possible_actions(self):
+        return self.current_node.actions
+    
+    def do_action(self, action_id=None):
+        '''
+            if current_node is action, require action_id
+            return new_state, child_id, action_message
+        '''
+        if self.current_node.type == 'action':
+            if isinstance(action_id, int):
+                if 0 <= action_id < len(self.current_node.actions):
+                    new_state, child_id, action_message = self.current_node.do_action(
+                        self.current_state, action_id
+                    )
+                else:
+                    raise Exception('invalid action_id')
+            else:
+                raise Exception('require action_id')
         
-        self.current_node = self.nodes[new_node_id]
+        else:
+            new_state, child_id, action_message = self.current_node.do_action(self.current_state)
+        
+        self.current_node = self.nodes[child_id]
+        self.current_state = new_state
+        return new_state, action_message 
     
     def __repr__(self, ):
         return f'current state: {self.current_state.money} ТФ Рублей. Сейчас {self.current_state.time} игровой день'
