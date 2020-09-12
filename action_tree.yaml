@@ -1,0 +1,34 @@
+nodes:
+    - # 0
+        type: 'action'
+        message: 'Ну что, пойдем на работу?'
+        actions:
+            - message: 'Да'
+              state_change: 
+                money: 100
+                time: 1
+              child: 1
+            - message: 'Нет'
+              state_change:
+                money: 50
+                time: 0
+              child: 0
+    - # 1
+        type: 'random'
+        message: null
+        actions:
+            - message: 'Ты получил наследство от далекого дяди, которого ты никогда не знал. Ужасная утрата, надеюсь эти 1000 ТФ рублей смогут помочь.'
+              state_change:
+                money: 1000
+                time: 1
+              child: 0
+              prob: 0.5
+            - message: 'Ты упал с лестницы, теперь нужны деньги на лекарства. 500 ТФ рублей не мало, но на здоровье экономить нельзя'
+              state_change:
+                money: -500
+                time: 1
+              child: 0
+              prob: 0.5
+
+              
+            
