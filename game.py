@@ -1,4 +1,5 @@
 import yaml
+import json
 from action_tree import *
 
 
@@ -47,7 +48,8 @@ if __name__ == '__main__':
     with open('action_tree.yaml', 'r') as f:
         config = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-    print(config['intro']['message'])
+    print('start: ', config['intro']['start'])
+    print('help:  ', config['intro']['help'])
 
     raw_nodes = config['nodes']
     nodes = [node_parser(n) for n in raw_nodes]
@@ -79,4 +81,15 @@ if __name__ == '__main__':
         if world.state.money < 0:
             print("\n\nДенег больше нет!\nТы проиграл!")
             break
+
+        # Dump world
+        with open('world_dump.json', 'w') as f:
+            f.write(json.dumps(world.dump()))
+        
+        # Load world
+        with open('world_dump.json', 'r') as f:
+            dict_obj = json.loads(f.read())
+            world.load(dict_obj)
+
+
 

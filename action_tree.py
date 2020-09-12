@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class State():
     def __init__(self, money=0, start_time=0):
         self.money = money
@@ -11,6 +12,16 @@ class State():
 money: {self.money}
 time: {self.time}
 '''
+
+    def dump(self):
+        return {
+            'money': self.money,
+            'time': self.time
+        }
+    
+    @staticmethod
+    def load(dict_obj):
+        return State(dict_obj['money'], dict_obj['time'])
     
 class Action():
     def __init__(self, message, state_change, child, prob=None):
@@ -24,6 +35,7 @@ class Action():
 
     def __repr__(self):
         return f'action: {self.message}'
+
 
 
 class Node():
@@ -102,5 +114,16 @@ class World():
     def __repr__(self, ):
         return f'current state: {self.current_state.money} ТФ Рублей. Сейчас {self.current_state.time} игровой день'
 
-
+    def dump(self):
+        state = self.current_state.dump()
+        current_node_index = self.nodes.index(self.current_node)
+        return {
+            'current_node_index': current_node_index,
+            'current_state': state,
+        }
+    
+    def load(self, dict_obj):
+        state = State.load(dict_obj['current_state'])
+        self.current_state = state
+        self.current_node = self.nodes[dict_obj['current_node_index']]
 
