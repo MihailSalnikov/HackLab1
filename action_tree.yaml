@@ -6,7 +6,7 @@ intro:
 В остальном, работай, инвестируй, буть крутым.\n
 \n
 Удачи!\n\n"
-    help: "Some help"
+    help: "Чтобы начать заново, используй /start. Чтобы посмотреть свое здоровье и энергию, используй /show_stats."
 nodes:
     - # 0
       type: 'action'
@@ -21,15 +21,15 @@ nodes:
           state_change:
             money: 0
             time: 0
-          child: 1
+          child: 5
         - message: 'Барменша'
           state_change:
             money: 0
             time: 0
-          child: 1
+          child: 6
     - # 1
       type: 'action'
-      message: 'Первое - работаешь или нет? Условия - если работаешь - тратишь 20 points energy и приносит 30к тенге. https://www.streetfoodguy.com/wp-content/uploads/2020/04/mcdonalds.jpeg'
+      message: 'Первое, с чем нужно определиться - наличие работы. Условия - если работаешь - тратишь 20 points energy и приносит 30к тенге. Работа не пыльная, но и не очень прибыльная. Пойдешь работать?  https://www.streetfoodguy.com/wp-content/uploads/2020/04/mcdonalds.jpeg'
       actions:
         - message: 'Да'
           state_change:
@@ -43,7 +43,7 @@ nodes:
           child: 2
     - # 2
       type: 'action'
-      message: 'Ты пришел на лекцию, но очень устал, потому что работал вчера допоздна. Что выбрать - поспать на лекции (+10 energy)  или слушать лекции?'
+      message: 'Ты пришел на лекцию, но очень устал, потому что работал вчера допоздна. Что выбрать - поспать на лекции (+10 energy) или слушать лекции?'
       actions:
         - message: 'Поспать'
           state_change:
@@ -54,10 +54,10 @@ nodes:
           state_change:
             time: 1
             money: 0
-          child: 3
+          child: 7
     - # 3
       type: 'action'
-      message: 'Тебе снится, что Илон Маск заходит в твиттер и пишет, что акции Теслы слишком дороги. Шорт или лонг? https://journal.tinkoff.ru/short-selling/'
+      message: 'Тебе снится, что Илон Маск заходит в твиттер и пишет, что акции Теслы слишком дороги. Шорт или лонг?  https://journal.tinkoff.ru/short-selling/'
       actions:
         - message: 'Шорт'
           state_change:
@@ -71,10 +71,137 @@ nodes:
           child: 4
     - # 4
       type: 'action'
+      message: 'Звенит звонок и вы просыпаетесь, интересно, получилось ли заработать...'
+      actions:
+        - message: 'Не знаю, лучше пойду выпью пивка! (-100 тянге)'
+          state_change:
+            time: 1
+            money: -100
+          child: 9
+        - message: 'Спросить у Олега, он точно знает!'
+          state_change:
+            time: 0
+            money: 0
+          child: 8
+    - # 5
+      type: 'action'
+      message: 'Делать курсовые за деньги еще не бизнес! Мы оба знаем, что ты студент, так что... https://www.autostraddle.com/wp-content/uploads/2013/07/Sad-Cat-1.jpg'
+      actions:
+        - message: 'Ну ладно...'
+          state_change:
+            time: 0
+            money: 0
+          child: 1
+    - # 6
+      type: 'action'
+      message: 'Мы оба знаем, что ты студент. Но раз работа у тебя тоже есть, знай, что работа тратит 20 points energy и приносит 30к тенге. https://img04.rl0.ru/748ad66f548e89002e4d31c80dc148a5/c300x400/nightparty.ru/uploads/photo_place/6/53/6537249da51b4294b64b25dbf69a7a4c.jpg'
+      actions:
+        - message: 'Тоже хорошо!'
+          state_change:
+            time: 1
+            money: 30000
+          child: 2
+    - # 7
+      type: 'action'
+      message: 'Ты пытался внимательно слушать, но побороть сон не так просто. Очень хочется спать!'
+      actions:
+        - message: 'Заснуть'
+          state_change:
+            time: 0
+            money: 0
+          child: 3
+        - message: 'Слушаем лекцию дальше'
+          state_change:
+            time: 0
+            money: 0
+          child: 7
+    - # 8
+      type: 'action'
+      message: 'Олег показывает курс акций. Мы немного заработали, как раз хватит на пиво (-100 тянге) и еще останется на такси (+ 500 тянге)'
+      actions:
+        - message: 'День был не простой, выпить пивка'
+          state_change:
+            time: 1
+            money: 400
+          child: 9
+        - message: 'Идем домой, пешком, нужно думать о здоровье!'
+          state_change:
+            time: 1
+            money: 500
+          child: 9
+    - # 9
+      type: 'action'
+      message: 'По дороге домой, вы видите вход в теле студию. Она манит вас.'
+      actions:
+        - message: 'Нет, еще много дел, пойду домой!'
+          state_change:
+            time: 0
+            money: 0
+          child: 9
+        - message: 'Пропуск вроде не нужен, зайду, посмотрим что там'
+          state_change:
+            time: 0
+            money: 0
+          child: 10
+    - # 10
+      type: 'action'
+      message: 'Вы пришли на шоу "Кто хочет стать миллионером?". В первом же туре попался сложный вопрос, и вы взяли подсказку "звонок другу", но у вас нет денег, чтобы позвонить. https://donday.ru/uploads/posts/2019-12/1575151038_2019-12-01-00-55-17.jpg'
+      actions:
+        - message: 'Попросить мобильный у Дмитрия Диброва'
+          state_change:
+            time: 0
+            money: 0
+          child: 11
+        - message: 'Попробовать громко крикнуть'
+          state_change:
+            time: 0
+            money: 0
+          child: 12
+        - message: 'Сказать "Олег, положи деньги мне на телефон'
+          state_change:
+            time: 0
+            money: 0
+          child: 13
+    - # 11
+      type: 'action'
+      message: 'В его мобильном тоже не оказалось денег https://www.autostraddle.com/wp-content/uploads/2013/07/Sad-Cat-1.jpg'
+      actions:
+        - message: 'Печально уйти'
+          state_change:
+            time: 1
+            money: 0
+          child: 14
+    - # 12
+      type: 'action'
+      message: 'Тишина в зале. У вашего друга не хватило денег, чтобы доехать до студии https://www.autostraddle.com/wp-content/uploads/2013/07/Sad-Cat-1.jpg'
+      actions:
+        - message: 'Уйти с позором'
+          state_change:
+            time: 1
+            money: 0
+          child: 14
+    - # 13
+      type: 'action'
+      message: 'В жизни, как и в игре, все бывает непросто. Однако и там и тут вы можете легко пополнить ваш мобильный счет, сказав "Олег, заплати за телефон" #service_promoting'
+      actions:
+        - message: 'Выиграть все деньги (+100000 тянге)'
+          state_change:
+            time: 1
+            money: 100000
+          child: 14
+    - # 14
+      type: 'action'
       message: 'Это конец игры (ПОКА)'
       actions:
         - message: 'Ура'
           state_change:
             time: 0
             money: 0
-          child: 4
+          child: 14
+        - message: 'Пойду звать друзей в эту игру!'
+          state_change:
+            time: 0
+            money: 0
+          child: 14
+          
+    

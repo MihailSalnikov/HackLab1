@@ -29,10 +29,11 @@ print(utils.dump_worlds(user_worlds))
 def handle_start_help(message):
     logging.info(f"Chat id: {message.chat.id} | Message: {message.text}")
     if message.text == '/start':
-        world = user_worlds.get(message.chat.id, action_tree.World(nodes))
+        world = action_tree.World(nodes)
         user_worlds[message.chat.id] = world
         markup = types.ReplyKeyboardMarkup()
-        markup.row(*[action.message for action in world.possible_actions()])
+        for m in [action.message for action in world.possible_actions()]:
+            markup.row(m)
         bot.send_message(message.chat.id, start_message)
         bot.send_message(message.chat.id, world.node.message, reply_markup=markup)
     elif message.text == '/help':
@@ -46,10 +47,14 @@ def react_to_choice(message): # Название функции не играе�
     logging.info(f"Chat id: {message.chat.id} | Message: {message.text}")
     world = user_worlds.get(message.chat.id, action_tree.World(nodes))
     action_id = utils.get_action_id(world, message.text)
-    assert action_id != -1, print(f"Something wrong in .yaml file; World: {world})")
-    new_state, action_message = world.do_action(action_id)
+    try:
+        assert action_id != -1, print(f"Something wrong in .yaml file; World: {world})")
+        new_state, action_message = world.do_action(action_id)
+    except Exception:
+        pass
     markup = types.ReplyKeyboardMarkup()
-    markup.row(*[action.message for action in world.possible_actions()])
+    for m in [action.message for action in world.possible_actions()]:
+        markup.row(m)
     user_worlds[message.chat.id] = world
     bot.send_message(message.chat.id, world.node.message, reply_markup=markup)
     # dumping progress
